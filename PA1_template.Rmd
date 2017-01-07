@@ -49,11 +49,11 @@ dailysteps <- aggregate(steps ~ date, activitydata, sum)
 hist(dailysteps$steps, breaks = 30, main = "Total Number of Steps/Day", xlab = "Steps", col = "grey")
 
 # calculate mean and median
-dailysteps_mean <- mean(activitydata$steps, na.rm=TRUE)
-dailysteps_median <- median(activitydata$steps, na.rm=TRUE)
+dailysteps_mean <- mean(dailysteps$steps)
+dailysteps_median <- median(dailysteps$steps)
 ```
 
-**Mean** is **`r dailysteps_mean`** and **median** is **`r dailysteps_median`**.
+**Mean** is **`r format(round(dailysteps_mean, 2), nsmall = 2)`** and **median** is **`r format(round(dailysteps_median, 2), nsmall = 2)`**.
 
 
 ## What is the average daily activity pattern?
@@ -89,13 +89,13 @@ dailysteps_corrected <- aggregate(steps ~ date, data = correcteddata, sum)
 hist(dailysteps_corrected$steps, breaks=30, main = "Total Number of Steps/Day [Corrected Data]", xlab = "Steps", col = "grey")
 
 # calculate mean and median for corrected data
-dailysteps_mean_corrected <- mean(correcteddata$steps, na.rm=TRUE)
-dailysteps_median_corrected <- median(correcteddata$steps, na.rm=TRUE)
+dailysteps_mean_corrected <- mean(dailysteps_corrected$steps, na.rm=TRUE)
+dailysteps_median_corrected <- median(dailysteps_corrected$steps, na.rm=TRUE)
 ```
 
-**Mean** for corrected data is **`r dailysteps_mean_corrected`** and **median** is **`r dailysteps_median_corrected`**.
+**Mean** for corrected data is **`r format(round(dailysteps_mean_corrected, 2), nsmall = 2)`** and **median** is **`r format(round(dailysteps_median_corrected, 2), nsmall = 2)`**.
 
-Mean and median for corrected data set are exactly the same than mean and median for original data.
+Mean for corrected data set are exactly the same than mean for original data. Median has changed slightly since we added values to dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

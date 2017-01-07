@@ -46,11 +46,11 @@ hist(dailysteps$steps, breaks = 30, main = "Total Number of Steps/Day", xlab = "
 
 ```r
 # calculate mean and median
-dailysteps_mean <- mean(activitydata$steps, na.rm=TRUE)
-dailysteps_median <- median(activitydata$steps, na.rm=TRUE)
+dailysteps_mean <- mean(dailysteps$steps)
+dailysteps_median <- median(dailysteps$steps)
 ```
 
-**Mean** is **37.3825996** and **median** is **0**.
+**Mean** is **10766.19** and **median** is **10765.00**.
 
 
 ## What is the average daily activity pattern?
@@ -97,13 +97,13 @@ hist(dailysteps_corrected$steps, breaks=30, main = "Total Number of Steps/Day [C
 
 ```r
 # calculate mean and median for corrected data
-dailysteps_mean_corrected <- mean(correcteddata$steps, na.rm=TRUE)
-dailysteps_median_corrected <- median(correcteddata$steps, na.rm=TRUE)
+dailysteps_mean_corrected <- mean(dailysteps_corrected$steps, na.rm=TRUE)
+dailysteps_median_corrected <- median(dailysteps_corrected$steps, na.rm=TRUE)
 ```
 
-**Mean** for corrected data is **37.3825996** and **median** is **0**.
+**Mean** for corrected data is **10766.19** and **median** is **10766.19**.
 
-Mean and median for corrected data set are exactly the same than mean and median for original data.
+Mean for corrected data set are exactly the same than mean for original data. Median has changed slightly since we added values to dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
