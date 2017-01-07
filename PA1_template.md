@@ -1,15 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
-```{r opts, echo = FALSE}
-knitr::opts_chunk$set(
-  fig.path = "figures/"
-)
-```
+
 
 ## Introduction
 This document is result of the Peer Assesment 1 project work for John Hopkins University Reproduciple Research course. Data used in this document contains  the number of steps taken by one anonymous individual and recorded using an activity device. 
@@ -23,7 +14,8 @@ The variables included in this dataset are:
 - **date:** The date on which the measurement was taken in YYYY-MM-DD format
 - **interval:** Identifier for the 5-minute interval in which measurement was taken
 
-```{r load_data, results='hide'}
+
+```r
 # create variables for file handling
 url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 file <- "./activity.csv"
@@ -43,43 +35,55 @@ activitydata <- read.csv(file)
 ## What is mean total number of steps taken per day?
 Data is agregated by date and histogram is produced to represent the total number of steps taken each day. Breaks is set to 30 for better resolution.
 
-```{r activity_histogram}
+
+```r
 # create histogram
 dailysteps <- aggregate(steps ~ date, activitydata, sum)
 hist(dailysteps$steps, breaks = 30, main = "Total Number of Steps/Day", xlab = "Steps", col = "grey")
+```
 
+![](figures/activity_histogram-1.png)<!-- -->
+
+```r
 # calculate mean and median
 dailysteps_mean <- mean(activitydata$steps, na.rm=TRUE)
 dailysteps_median <- median(activitydata$steps, na.rm=TRUE)
 ```
 
-**Mean** is **`r dailysteps_mean`** and **median** is **`r dailysteps_median`**.
+**Mean** is **37.3825996** and **median** is **0**.
 
 
 ## What is the average daily activity pattern?
 Produce Time series plot of the average number of steps taken. 
-```{r intervalplot}
+
+```r
 stepsinterval <- aggregate(steps ~ interval, activitydata, mean)
 plot(stepsinterval$interval, stepsinterval$steps, type = "l", xlab = "Interval", ylab = "Steps", col = "red" , main = "Average Number of Steps/Day by Interval")
+```
 
+![](figures/intervalplot-1.png)<!-- -->
+
+```r
 max <- stepsinterval[which.max(stepsinterval$steps), 1]
 ```
 
-The 5-minute interval that, on average, contains the maximum number of steps is **`r max`**.
+The 5-minute interval that, on average, contains the maximum number of steps is **835**.
 
 ## Imputing missing values
 There is missing data in source file (**NA**) that needs to be imputed. 
 
-```{r missing_values}
+
+```r
 # calculate total number of missing values
 missing <- sum(is.na(activitydata$steps))
 ```
 
-In total there is **`r missing`** missing values.
+In total there is **2304** missing values.
 
 In this case missing values are filled with the mean value of the dataset since only simple imputing strategy was required.
 
-```{r corrected_data}
+
+```r
 # create corrected data set
 correcteddata <- activitydata
 correcteddata$steps[is.na(correcteddata$steps)] <- mean(activitydata$steps, na.rm = TRUE)
@@ -87,13 +91,17 @@ correcteddata$steps[is.na(correcteddata$steps)] <- mean(activitydata$steps, na.r
 #draw histogram
 dailysteps_corrected <- aggregate(steps ~ date, data = correcteddata, sum)
 hist(dailysteps_corrected$steps, breaks=30, main = "Total Number of Steps/Day [Corrected Data]", xlab = "Steps", col = "grey")
+```
 
+![](figures/corrected_data-1.png)<!-- -->
+
+```r
 # calculate mean and median for corrected data
 dailysteps_mean_corrected <- mean(correcteddata$steps, na.rm=TRUE)
 dailysteps_median_corrected <- median(correcteddata$steps, na.rm=TRUE)
 ```
 
-**Mean** for corrected data is **`r dailysteps_mean_corrected`** and **median** is **`r dailysteps_median_corrected`**.
+**Mean** for corrected data is **37.3825996** and **median** is **0**.
 
 Mean and median for corrected data set are exactly the same than mean and median for original data.
 
@@ -101,7 +109,8 @@ Mean and median for corrected data set are exactly the same than mean and median
 
 Panel plot is used to visualize the patterns for weekdays and weekend.Factor variable is used to separate data for weekdays and weekends.
 
-```{r pattern_histogram}
+
+```r
 # modify timestamp to correct format
 correcteddata$date <- as.Date(correcteddata$date)
 
@@ -117,4 +126,6 @@ library(lattice)
 patterndata <- aggregate(steps ~ interval + weekend, correcteddata, mean)
 xyplot(steps ~ interval | factor(weekend), data = patterndata, type = "l", aspect = 1/3, xlab = "Interval", ylab = "Steps" )
 ```
+
+![](figures/pattern_histogram-1.png)<!-- -->
 
